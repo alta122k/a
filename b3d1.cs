@@ -1,144 +1,153 @@
-﻿using System;
+﻿using System.Globalization;
+using System;
+using System.Linq;
 using System.Text;
-
-namespace Bai2
+namespace New_folder
 {
-   class Item
+     class item
     {
-        private string tenmuc;
-        private float soluong;
-        private float gia;
+        private string tenMuc; //Tên mục hóa đơn
+        private float soLuong; //Số lượng
+        private float gia; //Giá tiền 
+        public string tenmuc{
+            get
+            {
+                return tenMuc;
+            }
+            set{
+                tenMuc=value;
+            }
+        }
         public float SoLuong
         {
-            get
+        get
             {
-                return soluong;
+                return soLuong;
             }
-
-            set
-            {
-                soluong = value;
+            set{
+                soLuong=value;
             }
-        }
-        public string TenMuc
-        {
-            get
-            {
-                return tenmuc;
-            }
-
-            set
-            {
-                tenmuc = value;
-            }
-        }
-
-        public float Gia
-        {
+        } 
+        public float Gia{
             get
             {
                 return gia;
             }
-
-            set
-            {
-                gia = value;
+            set{
+                gia=value;
             }
         }
-        public Item()
+        public item()
         {
-            tenmuc = "";
-            gia = 0;
-            soluong = 0;
+            tenMuc="";
+            soLuong=0;
+            gia=0;
         }
-        public void nhap()
+        public virtual void nhap()
         {
-            Console.Write("Nhập tên mục:");
-            TenMuc = Console.ReadLine();
+            Console.WriteLine("tenmuc");
+            tenmuc=Console.ReadLine();
             Console.Write("Nhập số lượng:");
             SoLuong = float.Parse(Console.ReadLine());
             Console.Write("Nhập giá bán:");
             Gia = float.Parse(Console.ReadLine());
         }
-        public void hien()
+        public virtual void hien()
         {
             
-            Console.Write("{0}\t{1}\t{2}\t", TenMuc,SoLuong, Gia);
+            Console.WriteLine("{0}\t{1}\t{2}\t", tenmuc,SoLuong, Gia);
         }
-        public float tinhtien()
+        public virtual float tinhtien()
         {
-            return SoLuong * Gia;
+            return SoLuong*Gia;
         }
     }
-    class Item_KM: Item
-    {
-        private float KhuyenMai;
-        public float khuyenmai
-        {
-            get
-            {
-                return KhuyenMai;
+    class khuyenmai:item{
+        private float Khuyenmai;
+        public float KhuyenMai{
+            get{
+                return Khuyenmai;
             }
-
-            set
-            {
-                KhuyenMai = value;
+            set{
+                Khuyenmai=value;
             }
         }
-        public Item_KM()
+        public khuyenmai()
         {
-            TenMuc = "";
-            Gia = 0;
-            SoLuong = 0;
-            KhuyenMai = 0;
+                Khuyenmai=0;
+                tenmuc="";
+                SoLuong=0;
+                Gia=0;
         }
-        /*
-         - Phương thức khởi tạo không tham số với việc khởi tạo các thành phần dữ liệu kiểu s
-            à 0 và kiểu xâu là xâu rỗng
-            - Phương thức “nhap” để nhập thông tin cho mục hóa đơn
-            - Phương thức “hienThi” để in thông tin mục hóa đơn ra màn hình
-            - Phương “tinhTien” để tính tiền cho một mục hóa đơn(=soLuong* gia*(1-
-            KhuyenMai))
-         */
-        public void Nhap()
+        public override void nhap()
         {
             base.nhap();
-            do
-            {
-                Console.Write("Nhập khuyến mại:");
-                KhuyenMai = float.Parse(Console.ReadLine());
-            } while (KhuyenMai < 0 || KhuyenMai >= 1);
-            
-            
+            Console.WriteLine("nhap gia khuyen mai");
+            KhuyenMai=float.Parse(Console.ReadLine());
         }
-        public void Hien()
+        public override void hien()
         {
-            Console.WriteLine("Tên mục\t Số lượng\t Giá bán\tKhuyen mai");
+            Console.WriteLine("Tên mục\t Số lượng\t Giá bán\tKhuyen mai\ttong tien");
             base.hien();
-            Console.Write(KhuyenMai);
+             Console.WriteLine("\t" + KhuyenMai + "%\t\t\t" + tinhtien() + "\n");
         }
-        public float Tinh()
+        public override float tinhtien()
         {
-            return base.tinhtien() * (1 - KhuyenMai);
+            return SoLuong* Gia*(1-KhuyenMai);
         }
     }
-    class Bill
-    {
+    class Bill{
         private string maKH, tenKH; //số điện thoại khách hàng và Tên khách hàng
-        private Item[] items;
+        private item []items; //Các mục hóa đơn 
+        public void nhap()
+        {
+            Console.WriteLine("ma kh");
+            maKH=Console.ReadLine();
+            Console.WriteLine("ten kh");
+            tenKH=Console.ReadLine();
+             Console.WriteLine("nhap so luong muc hoa dơn");
+             items= new item[int.Parse(Console.ReadLine())];
+              for (int i = 0; i < items.Count(); i++)
+            {
+                Console.WriteLine("Nhap san pham thu " + (i + 1));
+
+                items[i] = new khuyenmai();
+                items[i].nhap();
+            }
+        }
+        public void hien(){
+             Console.WriteLine("Ma kh " + maKH);
+            Console.WriteLine("Ten kh: " + tenKH);
+    
+            Console.Write("Ten sp" + "\t\t" + "Sl" + "\t\t" + "Gia" + "\t\t" + "Khuyến mãi" + "\t\t" + "Thành tiền" + "\n");
+             for (int i = 0; i < items.Count(); i++)
+            {
+                items[i].hien();
+            }
+        }
+         public double TongTien()
+        {
+            double tt = 0;
+            for (int i = 0; i < items.Count(); i++)
+            {
+                tt = tt + items[i].tinhtien();
+            }
+            return tt;
+        }
     }
     class Program
-    {
-
+    {      
+       
         static void Main(string[] args)
-        {
-            Item item=new Item();
-            item.nhap();
-            item.hien();
+        { 
+            Console.InputEncoding = Encoding.Unicode;
+            Console.OutputEncoding = Encoding.Unicode;
+            Bill ds = new Bill();
+            ds.nhap();
+            ds.hien();
+            Console.WriteLine("Tổng tiền của hóa đơn la =" + ds.TongTien());
             Console.ReadKey();
+           
         }
     }
 }
-
-
-
