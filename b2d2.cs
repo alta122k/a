@@ -1,19 +1,39 @@
 ﻿using System.Diagnostics;
 using System;
 using System.Collections;
+
 namespace New_folder__2_
 {
-    class Program
+    class node{
+       public string ch;
+       public node pnext; 
+    }
+    class Char
     {
-        static void Main(string[] args)
+        string i;
+    }
+    class stack
+    {
+        public node phead;
+        public node GetNode(string s)
         {
-            while (true)
-            {
-                Console.WriteLine("nhap");
-                string lh = Console.ReadLine();
+            
+            node P = new node();
+            P.ch = s;
+            P.pnext = null;
+            return P;
+        } 
+        public stack()
+        {
+            phead=null;
+        }
+        public stack(string bieuthuc)
+        {
+               
+               
                 Stack stack = new Stack();
      
-                foreach (char i in lh)
+                foreach (char i in bieuthuc)
                 {
                     if (i == '(')
                     {
@@ -46,9 +66,61 @@ namespace New_folder__2_
                 {
                     Console.WriteLine("true");
                 }
+        }
+       
+    }
+
+    
+    class Program
+    {
+        static void Main(string[] args)
+        {
+           
+            //  Queue MyQueue = new Queue(); 
+
+            //   foreach (char i in Console.ReadLine())
+            //     {
+            //         if (i == '(')
+            //         {
+            //               MyQueue.Enqueue(i);
+            //         }
+            //         else if (i == ')')
+            //         {
+            //             if(MyQueue.Count==0)
+            //             { 
+            //                 MyQueue.Enqueue(i);
+            //                 break;
+            //             }
+                        
+            //             if (MyQueue != null)
+            //             {
+            //                MyQueue.Dequeue();
+            //             }
+            //             // else
+            //             // {
+            //             //     stack.Push(i);
+
+            //             // }
+            //         }
+
+            //     }
+             
+            //     if (MyQueue.Count !=0)
+            //         Console.WriteLine("false");
+            //     else
+            //     {
+            //         Console.WriteLine("true");
+            //     }
+
+
+
+            while (true)
+            { 
+                Console.WriteLine("nhap");
+                stack s=new stack(Console.ReadLine());
 
             }
-
+          
 
         }
     }

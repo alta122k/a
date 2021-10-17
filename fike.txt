@@ -1,0 +1,35 @@
+using System.Globalization;
+using System;
+using System.IO;
+using System.Text;
+namespace New_folder
+{
+  
+  
+    class Program
+    {      
+       
+        static void Main(string[] args)
+        { 
+            string filepath="data.txt";
+            if(!File.Exists(filepath))//nếu k tồn tại thì tạo
+            {   
+                File.Create("data.txt").Close(); 
+            }
+            
+            foreach(string line in File.ReadLines(filepath))//đọc từng dòng 1
+            {
+                   // Console.WriteLine(line);
+                    if(line.Contains("trang"))//tìm kiếm hoặc dùng split sau đó so sánh trường màu ==trắng
+                    {
+                        Console.WriteLine(line);
+                    };
+            }
+            StreamWriter k=new StreamWriter(filepath,true);
+            k.WriteLine("ghi thêm");
+            k.Close();
+            Console.ReadKey();
+           
+        }
+    }
+}
